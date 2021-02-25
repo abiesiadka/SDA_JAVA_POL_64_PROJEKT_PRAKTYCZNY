@@ -3,6 +3,7 @@ package project.goodthoughts;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import project.goodthoughts.model.Quote;
+import project.goodthoughts.option.DefaultQuoteOption;
 
 import java.time.LocalDateTime;
 import java.util.Scanner;
@@ -62,7 +63,33 @@ public class GoodThoughtsApp {
     }
 
     private void executeOption(String userInput) {
+        logger.debug("Wykoonywana opcja: {}", userInput);
+        switch (userInput) {
+            case "0":
+                break;
+            case "1":
+                executeDownloadQuote();
+                break;
+            case "2":
+                handleAddQuote();
+                break;
+            case "3":
+                handleViewSaveQuotes();
+                break;
 
+        }
+    }
+    private void executeDownloadQuote() {
+    new DefaultQuoteOption().run();
+    }
+
+    private void handleAddQuote(){
+        getUserInput();
+        System.out.println("I'm Adding a Quote...");
+    }
+
+    private void handleViewSaveQuotes(){
+        System.out.println("I'm Viewing a saved a Quote...");
     }
 
     private boolean validateOption(String userInput) {
