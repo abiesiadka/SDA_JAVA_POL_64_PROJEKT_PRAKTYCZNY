@@ -1,4 +1,5 @@
 <configuration>
+
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>%d{HH:mm:ss.SSS} %-5level %logger{36} - %msg%n</pattern>
@@ -13,10 +14,11 @@
             <pattern>%d{HH:mm:ss.SSS} %-5level %logger{36} - %msg%n</pattern>
         </encoder>
     </appender>
-    <root level="WARN">
-        <appender-ref ref="FILE"/>
-    </root>
 
-    <logger name="projects.goodthoughts" level="DEBUG"/>
-    <logger name="org.hibernate" level="INFO"/>
+    <logger name="projects.todolist" level="DEBUG"/>
+    <logger name="projects.todolist" level="INFO"/>
+
+    <root level="WARN">
+        <appender-ref ref="FILE" />
+    </root>
 </configuration>

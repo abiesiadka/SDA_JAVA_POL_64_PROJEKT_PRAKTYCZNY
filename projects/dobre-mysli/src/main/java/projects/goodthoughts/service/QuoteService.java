@@ -1,12 +1,17 @@
-package project.goodthoughts.service;
+package projects.goodthoughts.service;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import project.goodthoughts.model.Quote;
+import projects.goodthoughts.config.DbUtil;
+import projects.goodthoughts.model.Quote;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.List;
+
 public class QuoteService {
     private static final Logger logger = LoggerFactory.getLogger(QuoteService.class);
 
@@ -37,12 +42,13 @@ public class QuoteService {
             quote.setCategory("Inspiring");
             logger.debug("Pobrany cytat: {}", quote);
         } catch (IOException | InterruptedException e) {
-            logger.info("Blad przy pobierania cytatu",e);
+            logger.info("Blad przy pobierania cytatu", e);
             e.printStackTrace();
         }
         logger.debug("Pobrany cytat: {}", quote);
         return quote;
     }
+
     private String getQuoteFragment(String body, String phrase) {
         int indexOfTitle = body.indexOf("title=\"" + phrase + "\"");
         body = body.substring(indexOfTitle);
@@ -50,17 +56,40 @@ public class QuoteService {
         body = body.substring(indexOfLead);
         return body;
     }
+
     private String getQuoteAuthor(String content) {
         int indexOfSpan = content.indexOf("<span itemprop=\"name\">");
         int indexOfSpanClosed = content.indexOf("</span>", indexOfSpan);
         int spanLength = "<span itemprop=\"name\">".length();
         return content.substring(indexOfSpan + spanLength, indexOfSpanClosed);
     }
+
     private String getQuoteContent(String body) {
         int indexOfSpan = body.indexOf("<span itemprop=\"text\">");
         int indexOfSpanClosed = body.indexOf("</span>", indexOfSpan);
         int spanLength = "<span itemprop=\"text\">".length();
         return body.substring(indexOfSpan + spanLength, indexOfSpanClosed);
     }
+
+    public Quote save(Quote quote) {
+        logger.debug("Zapis cytatu: {}", quote);
+        Session session = DbUtil.getSession();
+        Transaction transaction = session.beginTransaction();
+        session.save(quote);
+        transaction.commit();
+
+
+        logger.debug("Cytat zapisano pod id: {}", quote.getId());
+        return quote;
+
+
+    }
+
+    public void showSavedQuotes() {
+        List<Quote> quotes = DbUtil.getSession().createQuery("SELECT q FROM Quote q", Quote.class).getResultList();
+        System.out.println("AAAAAAAAAAAAAA Ile cytatów:  " + quotes.size());
+        quotes.forEach(System.out::println);
+    }
 }
+
 
