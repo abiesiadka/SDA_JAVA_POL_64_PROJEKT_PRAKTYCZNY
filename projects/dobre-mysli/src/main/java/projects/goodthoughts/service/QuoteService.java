@@ -114,7 +114,14 @@ public class QuoteService {
         logger.debug("Znalezniony cytat: {}, quote");
         return quote;
     }
-
+    public void remove(Quote quote) {
+        logger.info("Usuwany cytat: {}", quote);
+        Session session = DbUtil.getSession();
+        Transaction transaction = session.beginTransaction();
+        session.remove(quote);
+        transaction.commit();
+        logger.info("Usunieto cytat o id = {}", quote.getId());
+    }
 
 }
 

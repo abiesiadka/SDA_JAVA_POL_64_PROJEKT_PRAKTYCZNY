@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import projects.goodthoughts.config.DbUtil;
 import projects.goodthoughts.model.Quote;
 import projects.goodthoughts.option.DefaultQuoteOption;
+import projects.goodthoughts.option.DeleteQuoteOption;
 import projects.goodthoughts.option.Option;
 import projects.goodthoughts.option.ReviewQuotesOption;
 
@@ -71,10 +72,15 @@ import java.util.Set;
                     executeReviewQuotesOption();
                     break;
                 case"4":
+                    executeDeleteQuoteOption();
                 break;
             }
         }
 
+        private void executeDeleteQuoteOption() {
+            DeleteQuoteOption option = new DeleteQuoteOption();
+            option.run();
+        }
 
 
         private void executeReviewQuotesOption() {
