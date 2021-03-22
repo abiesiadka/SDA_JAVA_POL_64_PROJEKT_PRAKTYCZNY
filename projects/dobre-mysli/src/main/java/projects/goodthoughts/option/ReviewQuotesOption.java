@@ -14,7 +14,6 @@ public class ReviewQuotesOption implements Option{
         System.out.println("\nTwoje zapisane cytaty:\n");
     }
 
-
     @Override
     public void executeOption(String userInput) {
         Collection<Quote> quotes = quoteService.findAll();

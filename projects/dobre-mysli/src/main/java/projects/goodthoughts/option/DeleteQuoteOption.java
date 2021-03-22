@@ -33,8 +33,6 @@ public class DeleteQuoteOption implements Option {
         } else {
             System.out.println("\033[0;31mNie znaleziono wskazanego cytatu\033[0m");
         }
-
-
     }
 
     @Override
