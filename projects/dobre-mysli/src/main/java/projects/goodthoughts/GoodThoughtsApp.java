@@ -119,7 +119,6 @@ import java.util.Set;
             System.out.println("\t0. Zakoncz");
 
         }
-
         @Override
         public void showWelcomeMessage () {
             System.out.println("Witaj w naszej aplikacji (" + LocalDateTime.now());
