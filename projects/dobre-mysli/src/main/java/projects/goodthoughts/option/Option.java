@@ -36,8 +36,10 @@ public interface Option {
     default void showInvalidOptionMessage(String userInput) {}
 
     default boolean checkIsExitOption(String userInput) {
-       return true;
+        return true;
+
     }
+
 
     default  boolean validateOption(String userInput){
         return true;
@@ -48,5 +50,6 @@ public interface Option {
 
     default void showMenu() { }
 
-    default void showWelcomeMessage() {}
+    default void showWelcomeMessage() {
+    }
 }

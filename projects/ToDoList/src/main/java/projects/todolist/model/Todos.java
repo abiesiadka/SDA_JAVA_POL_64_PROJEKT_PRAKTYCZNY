@@ -1,8 +1,23 @@
 package projects.todolist.model;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
+
+@Entity
+@Table(name= "todos", uniqueConstraints = @UniqueConstraint(name = "unigue_todos", columnNames = {"name"}))
 public class Todos {
+
+
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "todos")  //EAGER dla many to one
+    private List<Task> tasks = new ArrayList<>();
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     private String name;
     private LocalDateTime createdOn;
@@ -13,6 +28,11 @@ public class Todos {
     public Todos(String name, LocalDateTime createdOn) {
         this.name = name;
         this.createdOn = createdOn;
+    }
+
+    @PrePersist
+    public void setCreatedOn() {
+        this.createdOn = LocalDateTime.now();
     }
 
     @Override
@@ -30,10 +50,19 @@ public class Todos {
         return name != null ? name.hashCode() : 0;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     @Override
     public String toString() {
         return "Todos{" +
-                "name='" + name + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 ", createdOn=" + createdOn +
                 '}';
     }
@@ -52,5 +81,13 @@ public class Todos {
 
     public void setCreatedOn(LocalDateTime createdOn) {
         this.createdOn = createdOn;
+    }
+
+    public List<Task> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
     }
 }

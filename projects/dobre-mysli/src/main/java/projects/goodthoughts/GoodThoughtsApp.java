@@ -7,6 +7,7 @@ import projects.goodthoughts.config.DbUtil;
 import projects.goodthoughts.model.Quote;
 import projects.goodthoughts.option.DefaultQuoteOption;
 import projects.goodthoughts.option.Option;
+import projects.goodthoughts.option.ReviewQuotesOption;
 
 import java.time.LocalDateTime;
 import java.util.Scanner;
@@ -22,8 +23,8 @@ import java.util.Set;
             logger.info("Uruchamianie aplikacji ...");
             Quote quote1 = new Quote("Life is beautiful", "Życie jest piękne",
                     "Anonim", "Życiowe", LocalDateTime.now());
-            Quote quote2 = new Quote("Life is brutal and full of zasadzkasz",
-                    "Życie jest brutalne i pełne zasadzek", "Wujek dobra rada", "Życiowe",
+            Quote quote2 = new Quote("Life is brutal and full of zasadzkas",
+                    "Życie jest brutalne i pełne zasadzek", "Wujek dobra  rada", "Życiowe",
                     LocalDateTime.now().minusMonths(3));
             logger.debug("Test cytatu 1: " + quote1 + " - koniec cytatu");
             logger.debug("Test cytatu 2: {} - koniec cytatu", quote2);
@@ -57,7 +58,7 @@ import java.util.Set;
 
         @Override
         public void executeOption (String userInput){
-            logger.debug("Wykoonywana opcja: {}", userInput);
+            logger.debug("Wykonywana opcja: {}", userInput);
             switch (userInput) {
                 case "0":
                     break;
@@ -65,19 +66,32 @@ import java.util.Set;
                     executeDefaultQuoteOption();
                     break;
                 case "2":
+                    break;
                 case "3":
+                    executeReviewQuotesOption();
+                    break;
+                case"4":
+                break;
             }
         }
 
 
+
+        private void executeReviewQuotesOption() {
+            ReviewQuotesOption option = new ReviewQuotesOption();
+            option.run();
+        }
+
+
         private void executeDefaultQuoteOption () {
-            new DefaultQuoteOption().run();
+            DefaultQuoteOption option = new DefaultQuoteOption();
+            option.run();
         }
 
 
         @Override
         public boolean validateOption (String userInput){
-            Set<String> validOptions = Set.of("0", "1", "2", "3");
+            Set<String> validOptions = Set.of("0", "1", "2", "3", "4");
             return validOptions.contains(userInput);
         }
 
@@ -95,6 +109,7 @@ import java.util.Set;
             System.out.println("\t1. Pobierz domyslny cytat");
             System.out.println("\t2. Dodaj wlasny cytat");
             System.out.println("\t3. Wyswietl zapisane cytaty");
+            System.out.println("\t4. Usun cytat");
             System.out.println("\t0. Zakoncz");
 
         }

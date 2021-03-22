@@ -1,15 +1,19 @@
 package projects.goodthoughts.service;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import projects.goodthoughts.config.DbUtil;
 import projects.goodthoughts.model.Quote;
+
+import javax.persistence.EntityManager;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.Collection;
 import java.util.List;
 
 public class QuoteService {
@@ -85,11 +89,34 @@ public class QuoteService {
 
     }
 
-    public void showSavedQuotes() {
-        List<Quote> quotes = DbUtil.getSession().createQuery("SELECT q FROM Quote q", Quote.class).getResultList();
-        System.out.println("AAAAAAAAAAAAAA Ile cytatów:  " + quotes.size());
-        quotes.forEach(System.out::println);
+    public Collection<Quote> findAll() {
+        //  EntityManager em = DbUtil.getSession();
+        Session session = DbUtil.getSession();
+        return session.createQuery("SELECT q FROM Quote q ORDER by q.createdOn DESC", Quote.class).getResultList();
     }
+
+    public boolean exist(Quote quote) {
+        Session session = DbUtil.getSession();
+        Query<Quote> query = session.createQuery("SELECT q FROM Quote q WHERE q.author = :author AND q.content = :content", Quote.class);
+        //select * from quotes WHERE author = `Sally Blount` and cytat
+        query.setParameter("author", quote.getAuthor());
+        query.setParameter("content", quote.getContent());
+        List<Quote> resultList = query.getResultList();
+        return !resultList.isEmpty();
+        // return resultList.size() > 0;
+
+    }
+
+    public Quote getQuote(Long id) {
+        logger.debug("Wyszukiwanie cytatu dla id = {}", id);
+        Session session = DbUtil.getSession();
+        Quote quote = session.find(Quote.class, id);
+        logger.debug("Znalezniony cytat: {}, quote");
+        return quote;
+    }
+
+
 }
+
 
 
